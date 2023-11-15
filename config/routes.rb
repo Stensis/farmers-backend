@@ -1,14 +1,20 @@
 # config/routes.rb
+
 Rails.application.routes.draw do
-  devise_for :users, controllers: {
-    sessions: 'sessions',
-    registrations: 'registrations'
-  }
-
-  # Your other routes...
-
   # Add a route for checking the user's authentication status
-  get '/auth_check', to: 'sessions#auth_check'
+  devise_scope :user do
+    get '/auth_check', to: 'users/sessions#auth_check'
+  end
+
+  devise_for :users, path: '', path_names: {
+    sign_in: 'login',
+    sign_out: 'logout',
+    registration: 'signup'
+  },
+  controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
 
   # Public route for Farmer dashboard
   get 'farmer/dashboard' # Uncomment if needed
