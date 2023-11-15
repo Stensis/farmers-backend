@@ -1,9 +1,11 @@
 class BuyersController < ApplicationController
+  before_action :authenticate_buyer!, only: [:new, :create]
   before_action :set_buyer, only: %i[ show edit update destroy ]
 
   # GET /buyers or /buyers.json
   def index
     @buyers = Buyer.all
+    render json: @buyers
   end
 
   # GET /buyers/1 or /buyers/1.json

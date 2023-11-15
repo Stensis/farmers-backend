@@ -1,15 +1,30 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      post '/login', to: 'sessions#create'
+      delete '/logout', to: 'sessions#destroy'
+
+      devise_for :farmers, controllers: {
+        registrations: 'api/v1/farmers/registrations'
+      }
+
+      devise_for :buyers, controllers: {
+        registrations: 'api/v1/buyers/registrations'
+      }
+
+      devise_scope :buyer do
+        post '/buyers/signup', to: 'buyers/registrations#create'
+      end
+
+      devise_scope :farmer do
+        post '/farmers/signup', to: 'farmers/registrations#create'
+      end
+    end
+  end
+
   resources :orders
   resources :products
   resources :categories
   resources :buyers
   resources :farmers
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end
