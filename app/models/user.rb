@@ -7,6 +7,12 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null
 
+  #  validations
+   has_many :notifications
+   has_many :reviews, dependent: :destroy
+
+
+
   ROLES = %w[Admin Buyer Farmer].freeze
 
   validates :role, inclusion: { in: ROLES }

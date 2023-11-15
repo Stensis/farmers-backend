@@ -32,6 +32,14 @@ Rails.application.routes.draw do
     get 'buyer/dashboard', to: 'buyer#dashboard', as: :buyer_dashboard
   end
 
+  resources :products do
+    get 'search', on: :collection
+  end
+
+  resources :farmers, only: [:show] do
+    get 'reviews', on: :member
+  end
+
   # Resourceful routes for various entities
   resources :orders
   resources :products

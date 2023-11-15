@@ -1,3 +1,4 @@
+# app/controllers/categories_controller.rb
 class CategoriesController < ApplicationController
   before_action :set_category, only: %i[show update destroy]
 
@@ -9,7 +10,8 @@ class CategoriesController < ApplicationController
 
   # GET /categories/1
   def show
-    render json: @category
+    # Include products for the selected category
+    render json: @category, include: :products
   end
 
   # POST /categories
@@ -40,12 +42,10 @@ class CategoriesController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_category
     @category = Category.find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
   def category_params
     params.require(:category).permit(:name, :product_id)
   end

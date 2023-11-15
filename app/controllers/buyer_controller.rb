@@ -5,6 +5,10 @@ class BuyerController < ApplicationController
 
   def dashboard
     authorize! :read, :dashboard
+
+    # Fetch categories with associated products
+    @categories_with_products = Category.includes(:products)
+
     # Logic for displaying buyer dashboard, e.g., order summaries, delivery status, etc.
   end
 

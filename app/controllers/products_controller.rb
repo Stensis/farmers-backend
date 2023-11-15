@@ -11,6 +11,7 @@ class ProductsController < ApplicationController
 
   # GET /products/1 or /products/1.json
   def show
+    render json: { product: @product, reviews: @product.reviews }
   end
 
   # GET /products/new
@@ -60,12 +61,23 @@ class ProductsController < ApplicationController
     end
   end
 
+  # to search for the product
+  def search
+    query = params[:query]
+    category_id = params[:category_id]
+
+    # Implement search logic based on the query and filters
+    @results = Product.search(query, category_id)
+
+    render json: @results
+  end
+
   private
 
   def set_product
     @product = Product.find(params[:id])
   end
-
+  
   def product_params
     params.require(:product).permit(:name, :description, :price, :quantity, :category_id)
   end
