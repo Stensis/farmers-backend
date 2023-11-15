@@ -28,7 +28,8 @@ gem "jbuilder"
 
 # ===================ADDED GEMS =================
 gem 'devise'
-gem 'jwt'
+gem 'devise-jwt'
+
 
 
 

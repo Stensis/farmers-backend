@@ -2,6 +2,12 @@ require_relative "boot"
 
 require "rails/all"
 
+
+require 'devise'  # Devise should be required before 'rails/all'
+
+# Rest of the file...
+
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
