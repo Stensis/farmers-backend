@@ -31,9 +31,7 @@ gem 'devise'
 gem 'devise-jwt'
 gem 'jsonapi-serializer'
 gem 'rack-cors'
-
-
-
+gem 'cancancan'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
