@@ -1,7 +1,10 @@
 class ProductsController < ApplicationController
+
+  before_action :authenticate_user!, only: %i[new create edit update destroy]
   before_action :set_product, only: %i[show edit update destroy]
+  before_action :authorize_farmer!, only: %i[edit create update destroy]
+
   before_action :authenticate_farmer!, only: %i[new create edit update destroy]
-  before_action :authorize_farmer!, only: %i[edit update destroy]
 
   # GET /products or /products.json
   def index
@@ -83,7 +86,7 @@ class ProductsController < ApplicationController
   end
 
   def authorize_farmer!
-    unless current_farmer == @product.farmer
+    unless current_user.farmer? && current_user == @product.farmer
       redirect_to root_path, alert: "You are not authorized to perform this action on this product."
     end
   end

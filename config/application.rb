@@ -23,6 +23,12 @@ module FarmerDb
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w(assets tasks))
 
+
+    # config.autoload_paths += Dir["#{config.root}/app/controllers/**/"]
+
+    # config/application.rb
+    # config.autoload_paths += %W(#{config.root}/app/models)
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
