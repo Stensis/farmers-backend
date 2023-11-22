@@ -11,14 +11,42 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def login
+    Rails.logger.info("Login parameters: #{params.inspect}")
+  
     self.resource = warden.authenticate!(auth_options)
-
+  
+    Rails.logger.info("User authenticated: #{resource.inspect}")
+  
     if user_signed_in?
       render_user_response(current_user, 'Logged in successfully.')
     else
       render_unauthorized_response('Invalid credentials.')
     end
   end
+
+  # def login
+  #   Rails.logger.info("Login parameters: #{params.inspect}")
+  
+  #   self.resource = warden.authenticate!(auth_options)
+  
+  #   if resource
+  #     Rails.logger.info("User found: #{resource.inspect}")
+  #     render_user_response(current_user, 'Logged in successfully.')
+  #   else
+  #     render_unauthorized_response('Invalid credentials.')
+  #   end
+  # end
+  
+  
+  # def login
+  #   self.resource = warden.authenticate!(auth_options)
+
+  #   if user_signed_in?
+  #     render_user_response(current_user, 'Logged in successfully.')
+  #   else
+  #     render_unauthorized_response('Invalid credentials.')
+  #   end
+  # end
 
   def destroy
     # Invalidate both access and refresh tokens

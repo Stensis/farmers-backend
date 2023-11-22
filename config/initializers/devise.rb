@@ -21,7 +21,7 @@ Devise.setup do |config|
 
   config.case_insensitive_keys = [:email]
   # Remove the block below, as it seems unnecessary and might be causing the issue.
-  # config.to_param do
-  #   JwtBlacklist
-  # end
+  config.to_param do
+    JwtBlacklist
+  end
 end

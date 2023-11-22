@@ -15,6 +15,7 @@ class Ability
       can :update, Order, buyer_id: user.id, status: 'pending' # Buyers can update pending orders
     elsif user.farmer?
       can :manage, Product, farmer_id: user.id # Farmers can manage their own products
+      can :read, Product 
       can :read, Order, product: { farmer_id: user.id } # Farmers can read orders for their products
     end
   end

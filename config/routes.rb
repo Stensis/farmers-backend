@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
+  
+
 
   resources :users do
     collection do
@@ -45,6 +47,7 @@ Rails.application.routes.draw do
     get 'reviews', on: :member
   end
 
+  
   # Resourceful routes for various entities
   resources :orders
   resources :products
