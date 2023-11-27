@@ -2,14 +2,7 @@ require_relative "boot"
 
 require "rails/all"
 
-
-require 'devise'  # Devise should be required before 'rails/all'
-
-# Rest of the file...
-
-
-# Require the gems listed in Gemfile, including any gems
-# you've limited to :test, :development, or :production.
+require 'devise'  
 Bundler.require(*Rails.groups)
 
 module FarmerDb
@@ -24,6 +17,16 @@ module FarmerDb
     config.autoload_lib(ignore: %w(assets tasks))
 
 
+     # Insert the CORS middleware configuration here
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins 'http://localhost:5173' # e.g., 'http://localhost:3000'
+        resource '*',
+          headers: :any,
+          methods: [:get, :post, :put, :patch, :delete, :options, :head],
+          credentials: true
+      end
+    end
     # config.autoload_paths += Dir["#{config.root}/app/controllers/**/"]
 
     # config/application.rb

@@ -1,12 +1,9 @@
-
-
 class Users::RegistrationsController < Devise::RegistrationsController
   include RackSessionsFix
   respond_to :json
 
   def create
     build_resource(sign_up_params)
-  
     # Set the role based on the provided parameter (default to 'Buyer' if not specified)
     resource.role = params[:user][:role] if params[:user].present? && params[:user][:role].present?
   
@@ -25,10 +22,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
   
-  
-
   private
-
   def sign_up_params
     params.require(:user).permit(
       :full_name,
@@ -37,7 +31,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       :password_confirmation,
       :tel,
       :location,
-      :role # Add :role to the permitted parameters
+      :role 
     )
   end
 

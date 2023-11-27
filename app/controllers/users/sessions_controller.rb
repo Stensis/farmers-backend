@@ -10,44 +10,34 @@ class Users::SessionsController < Devise::SessionsController
     end
   end
 
-  def login
+  def create
+  # resource = User.find_by(email: params[:email])
+  # Rails.logger.info("User authenticated: #{resource}")
+  #   if resource 
+  #   sign_in(resource)
+  #   render json:{ success:true, message: 'logged in successfully.'}
+  #   else
+  #   render json: {success: false, message: 'invalid email or password.'}
+  #   end
     Rails.logger.info("Login parameters: #{params.inspect}")
+    begin
+      # Attempt to authenticate the user
+      self.resource = warden.authenticate!(auth_options)
+      Rails.logger.info("User authenticated: #{resource.inspect}")
   
-    self.resource = warden.authenticate!(auth_options)
+      # Ensure the sign_in method is working
+      sign_in(resource_name, resource)
+      Rails.logger.info("User signed in: #{current_user.inspect}")
   
-    Rails.logger.info("User authenticated: #{resource.inspect}")
-  
-    if user_signed_in?
+      # Respond with user information
       render_user_response(current_user, 'Logged in successfully.')
-    else
+    rescue StandardError => e
+      # Handle authentication error
+      Rails.logger.error("Authentication error: #{e.message}")
       render_unauthorized_response('Invalid credentials.')
     end
   end
-
-  # def login
-  #   Rails.logger.info("Login parameters: #{params.inspect}")
   
-  #   self.resource = warden.authenticate!(auth_options)
-  
-  #   if resource
-  #     Rails.logger.info("User found: #{resource.inspect}")
-  #     render_user_response(current_user, 'Logged in successfully.')
-  #   else
-  #     render_unauthorized_response('Invalid credentials.')
-  #   end
-  # end
-  
-  
-  # def login
-  #   self.resource = warden.authenticate!(auth_options)
-
-  #   if user_signed_in?
-  #     render_user_response(current_user, 'Logged in successfully.')
-  #   else
-  #     render_unauthorized_response('Invalid credentials.')
-  #   end
-  # end
-
   def destroy
     # Invalidate both access and refresh tokens
     if user_signed_in?
@@ -63,10 +53,10 @@ class Users::SessionsController < Devise::SessionsController
   def render_user_response(user, message)
     access_token = generate_access_token(user)
     refresh_token = generate_refresh_token(user)
-
+  
     Rails.logger.info("access_token: #{access_token}")
     Rails.logger.info("refresh_token: #{refresh_token}")
-
+  
     render json: {
       status: {
         code: 200,
@@ -77,7 +67,7 @@ class Users::SessionsController < Devise::SessionsController
       refresh_token: refresh_token
     }, status: :ok
   end
-
+  
   def render_unauthorized_response(message)
     render json: {
       status: 401,
@@ -86,10 +76,12 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def generate_access_token(user)
-    JsonWebToken.encode(user_id: user.id, exp: 1.week.from_now.to_i)
+    JsonWebToken.encode(user_id: user.id, exp: 1.week.from_now)
   end
-
+  
   def generate_refresh_token(user)
-    JsonWebToken.encode(user_id: user.id, exp: 2.weeks.from_now.to_i)
+    JsonWebToken.encode(user_id: user.id, exp: 2.weeks.from_now)
   end
+  
+  
 end

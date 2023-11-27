@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   # Add a route for checking the user's authentication status
   devise_scope :user do
     get '/auth_check', to: 'users/sessions#auth_check'
-    post '/login', to: 'users/sessions#login' # Moved inside the devise_scope block
+    # post '/login', to: 'users/sessions#login'
   end
 
   devise_for :users, path: '', path_names: {
@@ -15,8 +15,6 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
   
-
-
   resources :users do
     collection do
       post 'refresh_token'
